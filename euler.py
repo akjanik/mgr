@@ -95,23 +95,26 @@ plt.plot(y_0_1, T_next, label=r'$T(t,y) = \sin(\pi y)$')
 
 # Case4: T(t, y) = 0.1*t + y
 def calculate_t(t):
+    # t here is T_current for each step
     T_t = np.zeros((size_y))
+    t = t.transpose()
     # m - length of row vector (number of y division)
     # j/m - from 0 to 1
     for j in range(m):
-        T_t[j] = 0.1*t + j/m
+        T_t[j] = 1/m * t[j]
     return T_t
 
 i = 0
-T_current = calculate_t(0)
+T0 = np.full((1, size_y), 10)
+T_current = T0
 
 while i < size_t:
     # dash - kreska
-    T_dash = calculate_t(i)
+    T_dash = calculate_t(T_current)
     T_next = T_current + h/R * (f_eta  - (A + B*T_current) - C*(T_current - T_dash) )
     T_current = T_next
     i += 1
-plt.plot(y_0_1, T_next, label='T(t,y) = 0.1*t + y')
+plt.plot(y_0_1, T_next.transpose(), label='T(t,y) = not sure what')
 
 plt.legend()
 plt.text(0.6, 10, r'$\eta = %s$' % eta, fontsize=10)
